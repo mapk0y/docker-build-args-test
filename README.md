@@ -2,39 +2,46 @@ test build-args option that added to docker 1.9.
 
 ```console
 [[NORMAL]]
-Sending build context to Docker daemon 4.096 kBSending build context to Docker daemon 4.096 kB
++ docker build --no-cache -t build-args-normal .
+Sending build context to Docker daemon 56.32 kB
 Step 1 : FROM debian
  ---> bf84c1d84a8f
 Step 2 : ARG user="nginx"
- ---> Running in b23025bdced4
- ---> e9242bc22905
-Removing intermediate container b23025bdced4
+ ---> Running in dbabdafafd67
+ ---> 872c5ab46156
+Removing intermediate container dbabdafafd67
 Step 3 : RUN groupadd ${user}  && useradd -g ${user} ${user}
- ---> Running in c1a51adce0c5
- ---> 0b7595e6b6ce
-Removing intermediate container c1a51adce0c5
+ ---> Running in 1a624960b84c
+ ---> 9260e2b2892d
+Removing intermediate container 1a624960b84c
 Step 4 : USER ${user}
- ---> Running in c569280a0c12
- ---> 8bcd48e81ea0
-Removing intermediate container c569280a0c12
-Successfully built 8bcd48e81ea0
+ ---> Running in 2793705f324a
+ ---> 90ffbab886a0
+Removing intermediate container 2793705f324a
+Successfully built 90ffbab886a0
++ docker run --rm build-args-normal id
 uid=1000(nginx) gid=1000(nginx) groups=1000(nginx)
++ set +x
+
 [[ADD BUILD ARGS]]
-Sending build context to Docker daemon 4.608 kBSending build context to Docker daemon 4.608 kB
++ docker build --no-cache -t build-args-add --build-arg=user=apache .
+Sending build context to Docker daemon 56.32 kB
 Step 1 : FROM debian
  ---> bf84c1d84a8f
 Step 2 : ARG user="nginx"
- ---> Running in a34fe4265989
- ---> 9b7fce7f420c
-Removing intermediate container a34fe4265989
+ ---> Running in c3acc2ecd957
+ ---> e0d12af90d63
+Removing intermediate container c3acc2ecd957
 Step 3 : RUN groupadd ${user}  && useradd -g ${user} ${user}
- ---> Running in acf2289ff436
- ---> df438771432a
-Removing intermediate container acf2289ff436
+ ---> Running in 9ee38548ac96
+ ---> 80b62389c46d
+Removing intermediate container 9ee38548ac96
 Step 4 : USER ${user}
- ---> Running in 3fdee6244cc5
- ---> 26dc0618ef66
-Removing intermediate container 3fdee6244cc5
-Successfully built 26dc0618ef66
+ ---> Running in 12dc651fb2da
+ ---> eb26a1ff75f3
+Removing intermediate container 12dc651fb2da
+Successfully built eb26a1ff75f3
++ docker run --rm build-args-add id
 uid=1000(apache) gid=1000(apache) groups=1000(apache)
++ set +x
 ```
